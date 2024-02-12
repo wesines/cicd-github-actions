@@ -20,7 +20,7 @@ jobs:
         run: docker build -t  my-image .
       
       - name: Tag image
-        run: docker tag my-image wesines/my-image
+        run: docker tag my-image ineswes/my-image
 
       - name: Verify build image
         run : docker images
@@ -30,3 +30,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: push to docker Hub
+        run: docker push ineswes/my-image
