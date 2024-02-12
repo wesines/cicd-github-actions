@@ -38,7 +38,13 @@ jobs:
 
       steps: 
 
-        - name: Test step
-          run: echo "hello"
+        - name: executing remote ssh commands using password
+          uses: appleboy/ssh-action@v1.0.3
+          with:
+            host: ${{ secrets.EC2_HOST }}
+            username: ${{ secrets.EC2_USERNAME }}
+            key: ${{ secrets.EC2_PRIVATE_KEY }}
+            script: |
+              sudo docker ps
          
 
