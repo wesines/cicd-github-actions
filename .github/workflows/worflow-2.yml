@@ -50,4 +50,5 @@ jobs:
               sudo docker stop nodejs-containers
               sudo docker rm -f nodejs-containers
               sudo docker run -d --name nodejs-containers -p 3001:3000 ineswes/my-image
-
+#26b27c53911219825e0fefe739ea4eb072ebaed044521ab3bd7f1541776fb601
+#26b27c539112

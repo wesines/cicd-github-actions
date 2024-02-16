@@ -1,6 +1,8 @@
 FROM node:14
 
-WORKDIR /usr/arc/app
+WORKDIR /app
+
+COPY package*.json .
 
 RUN npm install
 
