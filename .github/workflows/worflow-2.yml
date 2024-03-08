@@ -13,15 +13,15 @@ jobs:
     runs-on: ubuntu-latest 
     steps:
    
-      - name: Test variable
-        run: echo ${{ vars.IMAGE_NAME }}
+  #    - name: Test variable
+  #     run: echo ${{ vars.IMAGE_NAME }}
 
-      - name: checkout code
+      - name: checkout code (like git clone)
         uses: actions/checkout@v3
 
-      - name: Build image 
-        run: docker build -t  ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.IMAGE_NAME }} .
-      
+      - name: Get commit hash
+        id: get_commit_hash
+        run: echo "::set-output name=COMMIT_HASH::$(git rev-parse --short HEAD)"
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -29,8 +29,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: push to docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.IMAGE_NAME }}
+
+      - name: Build  and push image to dockerhub
+        env:
+          COMMIT_HASH: ${{ steps.get_commit_hash.outputs.COMMIT_HASH}}
+        run: |
+         echo COMMIT_HASH
+
+         docker build -t  ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.IMAGE_NAME }}:COMMIT_HASH .
+         docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.IMAGE_NAME }}:COMMIT_HASH 
+         
+
+         docker build -t  ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.IMAGE_NAME }} .
+         docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.IMAGE_NAME }}
+         
 
   deploy-to-ec2:
       runs-on: ubuntu-latest
