@@ -14,13 +14,13 @@ jobs:
     steps:
    
       - name: Test variable
-        uses: echo ${{ vars.IMAGE_NAME }}
+        run: echo ${{ vars.IMAGE_NAME }}
 
       - name: checkout code
         uses: actions/checkout@v3
 
       - name: Build image 
-        run: docker build -t  ${{ secrets.DOCKERHUB_USERNAME }}/my_image .
+        run: docker build -t  ${{ secrets.DOCKERHUB_USERNAME }}/my-image .
       
 
       - name: Login to Docker Hub
